@@ -18,8 +18,12 @@ public class App {
 
     private static void run(Connection con) {
         CustomerDao dao = new JdbcCustomerDao(con);
-        List<Customer> customers = dao.findByEmail("am%");
-        customers.forEach(System.out::println);
+//        List<Customer> customers = dao.findByEmail("am%");
+//        customers.forEach(System.out::println);
+
+        Customer newCustomer = new Customer(null, "Geza", "Szines", "szinesgeza@freemail.hu");
+        dao.save(newCustomer);
+        System.out.println(newCustomer);
     }
 
     private static Connection getConnection() {

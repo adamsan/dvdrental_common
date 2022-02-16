@@ -52,7 +52,35 @@ public class JdbcCustomerDao implements CustomerDao {
 
     @Override
     public void save(Customer entity) {
+        if (entity.getId() == null) {
+            insert(entity);
+        } else {
+            update(entity);
+        }
+    }
 
+    private void update(Customer entity) {
+    }
+
+    private void insert(Customer entity) {
+        try (PreparedStatement stmt = con.prepareStatement("INSERT INTO customer" +
+                " (first_Name,last_Name,email,store_id,address_id) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, entity.getFirstName());
+            stmt.setString(2, entity.getLastName());
+            stmt.setString(3, entity.getEmail());
+            stmt.setInt(4, 0);
+            stmt.setInt(5, 1);
+            stmt.executeUpdate();
+            ResultSet keys = stmt.getGeneratedKeys();
+            if (keys.next()) {
+                int id = keys.getInt(1);
+                entity.setId(id);
+            } else {
+                throw new RuntimeException("Could not get key for inserted Customer!");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
