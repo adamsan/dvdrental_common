@@ -42,7 +42,14 @@ public class JdbcCustomerDao implements CustomerDao {
 
     @Override
     public Customer findById(Integer id) {
-        return null;
+        try (PreparedStatement stmt = con.prepareStatement("select * from customer where customer_id = ?")){
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            return mapper.map(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -59,7 +66,19 @@ public class JdbcCustomerDao implements CustomerDao {
         }
     }
 
-    private void update(Customer entity) {
+    private void update(Customer customer) {
+        try (PreparedStatement stmt = con.prepareStatement("""
+                update customer
+                set first_name = ?, last_name = ?, email = ?
+                where customer_id = ?""")) {
+            stmt.setString(1, customer.getFirstName());
+            stmt.setString(2, customer.getLastName());
+            stmt.setString(3, customer.getEmail());
+            stmt.setInt(4, customer.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void insert(Customer entity) {

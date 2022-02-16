@@ -18,12 +18,25 @@ public class App {
 
     private static void run(Connection con) {
         CustomerDao dao = new JdbcCustomerDao(con);
-//        List<Customer> customers = dao.findByEmail("am%");
-//        customers.forEach(System.out::println);
+        System.out.println("List of customers, whos email starts with 'am':");
+        List<Customer> customers = dao.findByEmail("am%");
+        customers.forEach(System.out::println);
 
+        System.out.println("Create new Customer:");
         Customer newCustomer = new Customer(null, "Geza", "Szines", "szinesgeza@freemail.hu");
         dao.save(newCustomer);
         System.out.println(newCustomer);
+
+        System.out.println("Find customer:");
+        Customer c = dao.findById(602);
+        System.out.println(c);
+
+        System.out.println("Update existing customer, switch names:");
+        var tmp = c.getFirstName();
+        c.setFirstName(c.getLastName());
+        c.setLastName(tmp);
+        dao.save(c);
+        System.out.println(c);
     }
 
     private static Connection getConnection() {
