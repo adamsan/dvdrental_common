@@ -8,6 +8,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class App {
     public static void main(String[] args) throws SQLException {
@@ -18,25 +19,31 @@ public class App {
 
     private static void run(Connection con) {
         CustomerDao dao = new JdbcCustomerDao(con);
-        System.out.println("List of customers, whos email starts with 'am':");
+        System.out.println("\nList of customers, whos email starts with 'am':");
         List<Customer> customers = dao.findByEmail("am%");
         customers.forEach(System.out::println);
 
-        System.out.println("Create new Customer:");
+        System.out.println("\nCreate new Customer:");
         Customer newCustomer = new Customer(null, "Geza", "Szines", "szinesgeza@freemail.hu");
         dao.save(newCustomer);
         System.out.println(newCustomer);
 
-        System.out.println("Find customer:");
+        System.out.println("\nFind customer:");
         Customer c = dao.findById(602);
         System.out.println(c);
 
-        System.out.println("Update existing customer, switch names:");
+        System.out.println("\nUpdate existing customer, switch names:");
         var tmp = c.getFirstName();
         c.setFirstName(c.getLastName());
         c.setLastName(tmp);
         dao.save(c);
         System.out.println(c);
+        System.out.println("\nFinding all customers (displaying 10):");
+        String lastNames = dao.findAll().stream()
+                .limit(10)
+                .map(Customer::getLastName)
+                .collect(Collectors.joining(", "));
+        System.out.println(lastNames);
     }
 
     private static Connection getConnection() {

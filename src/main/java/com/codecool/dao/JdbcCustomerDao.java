@@ -42,7 +42,7 @@ public class JdbcCustomerDao implements CustomerDao {
 
     @Override
     public Customer findById(Integer id) {
-        try (PreparedStatement stmt = con.prepareStatement("select * from customer where customer_id = ?")){
+        try (PreparedStatement stmt = con.prepareStatement("select * from customer where customer_id = ?")) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -54,7 +54,17 @@ public class JdbcCustomerDao implements CustomerDao {
 
     @Override
     public List<Customer> findAll() {
-        return null;
+        try (var s = con.createStatement()) {
+
+            ResultSet rs = s.executeQuery("select * from customer");
+            List<Customer> results = new ArrayList<>();
+            while (rs.next()) {
+                results.add(mapper.map(rs));
+            }
+            return results;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
