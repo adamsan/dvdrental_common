@@ -58,10 +58,32 @@ public class JdbcFilmDaoImpl implements FilmDao {
     }
 
     private void update(Film film) {
+        String sql = """
+                update film set
+                title = ?,
+                description = ?,
+                release_year = ?,
+                rating = ?::mpaa_rating
+                where film_id = ?
+                """;
+        try (var ps = con.prepareStatement(sql)) {
+            ps.setString(1, film.getTitle());
+            ps.setString(2, film.getDescription());
+            ps.setInt(3, film.getReleaseYear());
+            ps.setString(4, film.getRating().toString());
+            ps.setInt(5, film.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void insert(Film film) {
-        String sql = "insert into film (title, description, release_year, rating, language_id) values(?,?,?,?::mpaa_rating, 1)";
+        String sql = """
+                insert into film 
+                (title, description, release_year, rating, language_id) 
+                values(?,?,?,?::mpaa_rating, 1)
+                """;
         try (var ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, film.getTitle());
             ps.setString(2, film.getDescription());

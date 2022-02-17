@@ -48,6 +48,14 @@ public class App {
         Film newFilm = new Film(null, 2022, "A noon of a scarry night", "Description later...", Rating.PG_13);
         dao.save(newFilm);
         System.out.println(newFilm);
+
+        System.out.println("\nUpdating inserted film:");
+        newFilm.setReleaseYear(newFilm.getReleaseYear() - 1);
+        dao.save(newFilm);
+        newFilm = dao.findById(newFilm.getId());
+        System.out.println(newFilm);
+
+
     }
 
     private void runCustomerQueries() {
