@@ -1,14 +1,11 @@
 package com.codecool.dao;
 
 import com.codecool.model.Film;
+import com.codecool.model.Rating;
 
-import java.awt.image.ImageProducer;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class JdbcFilmDaoImpl implements FilmDao {
 
@@ -18,7 +15,7 @@ public class JdbcFilmDaoImpl implements FilmDao {
             rs.getInt("release_year"),
             rs.getString("title"),
             rs.getString("description"),
-            rs.getString("rating")
+            Rating.of(rs.getString("rating"))
     );
 
     public JdbcFilmDaoImpl(Connection con) {
@@ -69,7 +66,7 @@ public class JdbcFilmDaoImpl implements FilmDao {
             ps.setString(1, film.getTitle());
             ps.setString(2, film.getDescription());
             ps.setInt(3, film.getReleaseYear());
-            ps.setString(4, film.getRating());
+            ps.setString(4, film.getRating().toString());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {

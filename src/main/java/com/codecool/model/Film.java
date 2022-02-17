@@ -5,9 +5,9 @@ public class Film {
     private Integer releaseYear;
     private String title;
     private String description;
-    private String rating;
+    private Rating rating;
 
-    public Film(Integer id, Integer releaseYear, String title, String description, String rating) {
+    public Film(Integer id, Integer releaseYear, String title, String description, Rating rating) {
         this.id = id;
         this.releaseYear = releaseYear;
         this.title = title;
@@ -51,11 +51,11 @@ public class Film {
         return this;
     }
 
-    public String getRating() {
+    public Rating getRating() {
         return rating;
     }
 
-    public Film setRating(String rating) {
+    public Film setRating(Rating rating) {
         this.rating = rating;
         return this;
     }

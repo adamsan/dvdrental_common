@@ -6,6 +6,7 @@ import com.codecool.dao.JdbcCustomerDao;
 import com.codecool.dao.JdbcFilmDaoImpl;
 import com.codecool.model.Customer;
 import com.codecool.model.Film;
+import com.codecool.model.Rating;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import java.sql.Connection;
@@ -44,7 +45,7 @@ public class App {
         System.out.println(f);
 
         System.out.println("\nInserting new film:");
-        Film newFilm = new Film(null, 2022, "A noon of a scarry night", "Description later...", "PG-13");
+        Film newFilm = new Film(null, 2022, "A noon of a scarry night", "Description later...", Rating.PG_13);
         dao.save(newFilm);
         System.out.println(newFilm);
     }
