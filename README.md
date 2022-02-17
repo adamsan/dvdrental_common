@@ -49,3 +49,6 @@ Csináljatok egy `FilmDao`-t is, a `Film` modellben legyen benne az
 - `length`
 
 A `FilmDao`-ban le lehessen kérni filmeket `rating` és `releaseYear` alapján is.
+Mi történik, ha a `rating` típusát `String`-ként kezelitek?
+Hogy vizsgájátok meg az adatbázis mező típusát?
+Java kódban hogy éritek el, hogy érvénytelen érték ne kerülhessen ide?
