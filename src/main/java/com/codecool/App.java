@@ -11,21 +11,28 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class App {
+    private Connection con;
+
+    public App(Connection con) {
+
+        this.con = con;
+    }
+
     public static void main(String[] args) throws SQLException {
         try (Connection con = getConnection()) {
-            run(con);
+            new App(con).run();
         }
     }
 
-    private static void run(Connection con) {
-        runCustomerQueries(con);
-        runFilmQueries(con);
+    private void run() {
+        runCustomerQueries();
+        runFilmQueries();
     }
 
-    private static void runFilmQueries(Connection con) {
+    private void runFilmQueries() {
     }
 
-    private static void runCustomerQueries(Connection con) {
+    private void runCustomerQueries() {
         CustomerDao dao = new JdbcCustomerDao(con);
         System.out.println("\nList of customers, whos email starts with 'am':");
         List<Customer> customers = dao.findByEmail("am%");
