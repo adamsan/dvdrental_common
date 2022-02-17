@@ -45,8 +45,9 @@ public class JdbcCustomerDao implements CustomerDao {
         try (PreparedStatement stmt = con.prepareStatement("select * from customer where customer_id = ?")) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-            rs.next();
-            return mapper.map(rs);
+            if(rs.next())
+                return mapper.map(rs);
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -114,6 +115,11 @@ public class JdbcCustomerDao implements CustomerDao {
 
     @Override
     public void deleteById(Integer id) {
-
+        try (PreparedStatement ps = con.prepareStatement("delete from customer where customer_id = ?")) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

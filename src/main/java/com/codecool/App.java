@@ -28,6 +28,10 @@ public class App {
         dao.save(newCustomer);
         System.out.println(newCustomer);
 
+        System.out.println("\nDelete the previously created customer:");
+        dao.deleteById(newCustomer.getId());
+        System.out.println(dao.findById(newCustomer.getId())); // should be null
+
         System.out.println("\nFind customer:");
         Customer c = dao.findById(602);
         System.out.println(c);
