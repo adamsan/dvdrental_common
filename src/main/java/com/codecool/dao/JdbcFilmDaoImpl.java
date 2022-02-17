@@ -25,7 +25,17 @@ public class JdbcFilmDaoImpl implements FilmDao {
 
     @Override
     public Film findById(Integer id) {
-        return null;
+        String sql = "select * from film where film_id = ?";
+        try (var ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return mapper.map(rs);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

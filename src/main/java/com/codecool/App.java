@@ -5,6 +5,7 @@ import com.codecool.dao.FilmDao;
 import com.codecool.dao.JdbcCustomerDao;
 import com.codecool.dao.JdbcFilmDaoImpl;
 import com.codecool.model.Customer;
+import com.codecool.model.Film;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import java.sql.Connection;
@@ -37,6 +38,10 @@ public class App {
         dao.findAll().stream()
                 .limit(5)
                 .forEach(System.out::println);
+
+        System.out.println("\nFind film by id");
+        Film f = dao.findById(384);
+        System.out.println(f);
 
     }
 
