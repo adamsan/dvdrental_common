@@ -43,6 +43,10 @@ public class App {
         Film f = dao.findById(384);
         System.out.println(f);
 
+        System.out.println("\nInserting new film:");
+        Film newFilm = new Film(null, 2022, "A noon of a scarry night", "Description later...", "PG-13");
+        dao.save(newFilm);
+        System.out.println(newFilm);
     }
 
     private void runCustomerQueries() {

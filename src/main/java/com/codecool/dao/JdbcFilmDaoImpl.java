@@ -2,11 +2,13 @@ package com.codecool.dao;
 
 import com.codecool.model.Film;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.awt.image.ImageProducer;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class JdbcFilmDaoImpl implements FilmDao {
 
@@ -53,8 +55,29 @@ public class JdbcFilmDaoImpl implements FilmDao {
     }
 
     @Override
-    public void save(Film entity) {
+    public void save(Film film) {
+        if (film.getId() == null) insert(film);
+        else update(film);
+    }
 
+    private void update(Film film) {
+    }
+
+    private void insert(Film film) {
+        String sql = "insert into film (title, description, release_year, rating, language_id) values(?,?,?,?::mpaa_rating, 1)";
+        try (var ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, film.getTitle());
+            ps.setString(2, film.getDescription());
+            ps.setInt(3, film.getReleaseYear());
+            ps.setString(4, film.getRating());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                film.setId(rs.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
