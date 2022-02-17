@@ -1,7 +1,9 @@
 package com.codecool;
 
 import com.codecool.dao.CustomerDao;
+import com.codecool.dao.FilmDao;
 import com.codecool.dao.JdbcCustomerDao;
+import com.codecool.dao.JdbcFilmDaoImpl;
 import com.codecool.model.Customer;
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -25,11 +27,17 @@ public class App {
     }
 
     private void run() {
-        runCustomerQueries();
+//        runCustomerQueries();
         runFilmQueries();
     }
 
     private void runFilmQueries() {
+        FilmDao dao = new JdbcFilmDaoImpl(con);
+        System.out.println("\nFind all Films, print the first 5:");
+        dao.findAll().stream()
+                .limit(5)
+                .forEach(System.out::println);
+
     }
 
     private void runCustomerQueries() {
