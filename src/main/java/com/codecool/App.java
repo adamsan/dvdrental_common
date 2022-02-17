@@ -18,6 +18,14 @@ public class App {
     }
 
     private static void run(Connection con) {
+        runCustomerQueries(con);
+        runFilmQueries(con);
+    }
+
+    private static void runFilmQueries(Connection con) {
+    }
+
+    private static void runCustomerQueries(Connection con) {
         CustomerDao dao = new JdbcCustomerDao(con);
         System.out.println("\nList of customers, whos email starts with 'am':");
         List<Customer> customers = dao.findByEmail("am%");
