@@ -57,12 +57,18 @@ public class App {
 
         System.out.println("\nFinding by Rating, displaying 5 PG-13 film:");
         dao.findAll().stream().map(Film::getRating).distinct().forEach(System.out::println);
-        dao.findByRating(Rating.NC_17).stream()
-                .map(Film::getTitle)
+        dao.findByRating(Rating.PG_13).stream()
+                .map(film -> film.getTitle() + " " + film.getReleaseYear() + " " + film.getRating())
                 .distinct()
                 .limit(5)
                 .forEach(System.out::println);
 
+        System.out.println("\nFind films by release year, display first 5:");
+        dao.findByReleaseYear(2006).stream()
+                .map(film -> film.getTitle() + " " + film.getReleaseYear() + " " + film.getRating())
+                .distinct()
+                .limit(5)
+                .forEach(System.out::println);
     }
 
     private void runCustomerQueries() {

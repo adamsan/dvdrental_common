@@ -106,7 +106,6 @@ public class JdbcFilmDaoImpl implements FilmDao {
 
     @Override
     public List<Film> findByRating(Rating rating) {
-
         try (var ps = con.prepareStatement("select * from film where rating=?::mpaa_rating")) {
             ps.setString(1, rating.toString());
             ResultSet rs = ps.executeQuery();
@@ -122,6 +121,16 @@ public class JdbcFilmDaoImpl implements FilmDao {
 
     @Override
     public List<Film> findByReleaseYear(int releaseYear) {
-        return null;
+        try (var ps = con.prepareStatement("select * from film where release_year=?")) {
+            ps.setInt(1, releaseYear);
+            ResultSet rs = ps.executeQuery();
+            List<Film> results = new ArrayList<>();
+            while (rs.next()) {
+                results.add(mapper.map(rs));
+            }
+            return results;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
