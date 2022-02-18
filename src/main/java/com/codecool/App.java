@@ -55,6 +55,13 @@ public class App {
         newFilm = dao.findById(newFilm.getId());
         System.out.println(newFilm);
 
+        System.out.println("\nFinding by Rating, displaying 5 PG-13 film:");
+        dao.findAll().stream().map(Film::getRating).distinct().forEach(System.out::println);
+        dao.findByRating(Rating.NC_17).stream()
+                .map(Film::getTitle)
+                .distinct()
+                .limit(5)
+                .forEach(System.out::println);
 
     }
 

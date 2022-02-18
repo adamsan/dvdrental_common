@@ -105,8 +105,19 @@ public class JdbcFilmDaoImpl implements FilmDao {
     }
 
     @Override
-    public List<Film> findByRating(String rating) {
-        return null;
+    public List<Film> findByRating(Rating rating) {
+
+        try (var ps = con.prepareStatement("select * from film where rating=?::mpaa_rating")) {
+            ps.setString(1, rating.toString());
+            ResultSet rs = ps.executeQuery();
+            List<Film> results = new ArrayList<>();
+            while (rs.next()) {
+                results.add(mapper.map(rs));
+            }
+            return results;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

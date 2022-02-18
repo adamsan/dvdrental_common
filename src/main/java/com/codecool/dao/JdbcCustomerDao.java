@@ -56,7 +56,6 @@ public class JdbcCustomerDao implements CustomerDao {
     @Override
     public List<Customer> findAll() {
         try (var s = con.createStatement()) {
-
             ResultSet rs = s.executeQuery("select * from customer");
             List<Customer> results = new ArrayList<>();
             while (rs.next()) {
